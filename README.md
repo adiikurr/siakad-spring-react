@@ -1,2 +1,3 @@
-# Sistem Informasi Akademik (Spring + React)
+# Sistem Informasi Akademik 
+Backend Java Spring + Frontend React.js
  
