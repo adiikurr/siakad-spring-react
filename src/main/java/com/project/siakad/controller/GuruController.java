@@ -18,7 +18,7 @@ import com.project.siakad.model.Guru;
 import com.project.siakad.service.GuruService;
 
 @Controller
-@RequestMapping("/guru")
+@RequestMapping("api/guru")
 public class GuruController {
     @Autowired private GuruService guruService;
 
