@@ -41,4 +41,12 @@ public class GuruService {
 
         return GuruRepo.save(existingGuru);
     }
+
+    public Guru deleteGuruById (Integer id) {
+        Guru existingGuru = GuruRepo.findById(id).orElseThrow(()
+        -> new ResourceNotFoundException("Data Guru not found with ID: " + id));
+
+        GuruRepo.delete(existingGuru);
+        return existingGuru;
+    }
 }

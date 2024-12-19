@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,7 @@ import com.project.siakad.service.GuruService;
 public class GuruController {
     @Autowired private GuruService guruService;
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/getGuruById/{id}")
     public ResponseEntity<Guru> getGuruById(@PathVariable Integer id) {
         Guru guru = guruService.getGuruById(id);
         return ResponseEntity.ok(guru);
@@ -47,14 +48,16 @@ public class GuruController {
             Guru updatedGuru = guruService.updateGuru(id, guru);
             return ResponseEntity.ok(updatedGuru);
         }  catch (ResourceNotFoundException e) {
-            // Handle not found exception
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            // Handle illegal arguments (e.g., null ID)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        } catch (Exception e) {
-            // Handle other exceptions
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating data: " + e.getMessage());
+        }
+    }
+    @DeleteMapping("/deleteGuruById/{id}")
+    public ResponseEntity<?> deleteGuruById(@PathVariable Integer id) {
+        try {
+            Guru deletedGuru = guruService.deleteGuruById(id);
+            return ResponseEntity.ok(deletedGuru);
+        }  catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 }
