@@ -28,7 +28,7 @@ public class SiswaService {
 
     public Siswa updateSiswa (Integer id, Siswa siswa) {
         Siswa existingSiswa = SiswaRepo.findById(id).orElseThrow(()
-            -> new ResourceNotFoundException("Data Siswa not found with ID: " + siswa.getSiswa_id()));
+            -> new ResourceNotFoundException("Data Siswa not found with ID: " + id));
         
         existingSiswa.setNo_induk(siswa.getNo_induk());
         existingSiswa.setNisn(siswa.getNisn());

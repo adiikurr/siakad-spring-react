@@ -28,7 +28,7 @@ public class GuruService {
 
     public Guru updateGuru (Integer id, Guru guru) {
         Guru existingGuru = GuruRepo.findById(id).orElseThrow(()
-            -> new ResourceNotFoundException("Data Guru not found with ID: " + guru.getGuru_id()));
+            -> new ResourceNotFoundException("Data Guru not found with ID: " + id));
         
         existingGuru.setNip(guru.getNip());
         existingGuru.setNama_guru(guru.getNama_guru());
