@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.project.siakad.exception.ResourceNotFoundException;
 import com.project.siakad.model.Siswa;
-import com.project.siakad.response.ApiResponse;
+import com.project.siakad.model.ApiResponse;
 import com.project.siakad.service.SiswaService;
 
 @Controller
@@ -44,8 +44,16 @@ public class SiswaController {
     @GetMapping("/getAllSiswa")
     public ResponseEntity<?> getAllSiswa () {
         try {
-            List<Siswa> siswa = siswaService.getAllSiswa();
-            return ResponseEntity.ok(siswa);
+            List<Siswa> siswaList = siswaService.getAllSiswa();
+            if (siswaList.isEmpty()) {
+                ApiResponse response = new ApiResponse(
+                    HttpStatus.NOT_FOUND.value(),
+                    HttpStatus.NOT_FOUND.name(),
+                    Map.of("general", new String[]{"No data found for List Siswa"})
+                );
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+            return ResponseEntity.ok(siswaList);
         } catch (ResourceNotFoundException e) {
             ApiResponse response = new ApiResponse(
                 HttpStatus.NOT_FOUND.value(),

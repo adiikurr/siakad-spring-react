@@ -18,8 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.project.siakad.exception.ResourceNotFoundException;
 import com.project.siakad.model.Guru;
-import com.project.siakad.response.ApiResponse;
+import com.project.siakad.model.ApiResponse;
 import com.project.siakad.service.GuruService;
+import com.project.siakad.util.ResponseUtil;
 
 @Controller
 @RequestMapping("api/guru")
@@ -30,7 +31,7 @@ public class GuruController {
     public ResponseEntity<?> getGuruById(@PathVariable Integer id) {
         try {
             Guru guru = guruService.getGuruById(id);
-            return ResponseEntity.ok(guru);
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, guru);
         } catch (ResourceNotFoundException e) {
             ApiResponse response = new ApiResponse(
                 HttpStatus.NOT_FOUND.value(),
@@ -44,8 +45,16 @@ public class GuruController {
     @GetMapping("/getAllGuru")
     public ResponseEntity<?> getAllGuru () {
         try {
-            List<Guru> guru = guruService.getAllGuru();
-            return ResponseEntity.ok(guru);
+            List<Guru> guruList = guruService.getAllGuru();
+            if (guruList.isEmpty()) {
+                ApiResponse response = new ApiResponse(
+                    HttpStatus.NOT_FOUND.value(),
+                    HttpStatus.NOT_FOUND.name(),
+                    Map.of("general", new String[]{"No data found for List Guru"})
+                );
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+            return ResponseEntity.ok(guruList);
         } catch (ResourceNotFoundException e) {
             ApiResponse response = new ApiResponse(
                 HttpStatus.NOT_FOUND.value(),

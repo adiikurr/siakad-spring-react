@@ -1,7 +1,9 @@
-package com.project.siakad.response;
+package com.project.siakad.model;
 
 import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+@JsonPropertyOrder({"status", "code", "data"})
 public class ApiResponse {
     private int code;
     private String status;
@@ -13,7 +15,6 @@ public class ApiResponse {
         this.errors = errors;
     }
 
-    // Getter dan Setter
     public int getCode() {
         return code;
     }
