@@ -38,6 +38,7 @@ public class KelasServiceImpl implements KelasService{
         
         existingKelas.setNama_kelas(kelas.getNama_kelas());
         existingKelas.setGuru_id(kelas.getGuru_id());
+        existingKelas.setUpdated_at(LocalDateTime.now());
 
         return KelasRepo.save(existingKelas);
     }

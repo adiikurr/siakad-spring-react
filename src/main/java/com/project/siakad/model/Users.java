@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-public class User {
+public class Users {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Integer user_id;
     
     @Column @NotNull private String username;

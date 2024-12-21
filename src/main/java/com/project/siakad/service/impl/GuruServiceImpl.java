@@ -31,7 +31,7 @@ public class GuruServiceImpl implements GuruService {
     @Override
     public Guru updateGuru (Integer id, Guru guru) {
         Guru existingGuru = GuruRepo.findById(id).orElseThrow(()
-            -> new ResourceNotFoundException("Data Guru not found with ID: " + id));
+        -> new ResourceNotFoundException("Data Guru not found with ID: " + id));
         
         existingGuru.setNip(guru.getNip());
         existingGuru.setNama_guru(guru.getNama_guru());
@@ -41,6 +41,7 @@ public class GuruServiceImpl implements GuruService {
         existingGuru.setTempat_lahir(guru.getTempat_lahir());
         existingGuru.setTanggal_lahir(guru.getTanggal_lahir());
         existingGuru.setAlamat(guru.getAlamat());
+        existingGuru.setUpdated_at(LocalDateTime.now());
 
         return GuruRepo.save(existingGuru);
     }

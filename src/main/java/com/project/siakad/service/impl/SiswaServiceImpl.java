@@ -42,6 +42,7 @@ public class SiswaServiceImpl implements SiswaService{
         existingSiswa.setTempat_lahir(siswa.getTempat_lahir());
         existingSiswa.setTanggal_lahir(siswa.getTanggal_lahir());
         existingSiswa.setAlamat(siswa.getAlamat());
+        existingSiswa.setUpdated_at(LocalDateTime.now());
 
         return SiswaRepo.save(existingSiswa);
     }

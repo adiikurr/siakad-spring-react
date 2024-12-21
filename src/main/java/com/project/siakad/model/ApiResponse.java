@@ -3,7 +3,7 @@ package com.project.siakad.model;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({"status", "code", "data"})
+@JsonPropertyOrder({"code", "status", "data"})
 public class ApiResponse {
     private int code;
     private String status;

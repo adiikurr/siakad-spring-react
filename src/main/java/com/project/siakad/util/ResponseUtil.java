@@ -4,6 +4,7 @@ import com.project.siakad.model.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class ResponseUtil {
@@ -18,11 +19,10 @@ public class ResponseUtil {
     }
 
     public static <T> ResponseEntity<Map<String, Object>> generateSuccessResponse(HttpStatus status, T data) {
-        Map<String, Object> response = Map.of(
-            "code", status.value(),
-            "status", status.name(),
-            "data", data
-        );
+        Map<String, Object> response = new LinkedHashMap<>();
+            response.put("code", status.value());
+            response.put("status", status.name());
+            response.put("data", data);
         return ResponseEntity.status(status).body(response);
     }
 }
