@@ -13,11 +13,11 @@ import jakarta.validation.constraints.NotNull;
 public class Users {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Integer user_id;
     
-    @Column @NotNull private String username;
+    @Column(unique = true) @NotNull private String username;
     @Column @NotNull private String password;
     @Column private String role; 
-    @Column private Integer nip; 
-    @Column private Integer no_induk;
+    @Column(unique = true) private Integer nip; 
+    @Column(unique = true) private Integer no_induk;
     @Column private LocalDateTime created_at;
     @Column private LocalDateTime updated_at;
     @Column private LocalDateTime deleted_at;
