@@ -1,8 +1,6 @@
 package com.project.siakad.controller;
 
 import java.util.List;
-import java.util.Map;
-
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.project.siakad.exception.ResourceNotFoundException;
 import com.project.siakad.model.Guru;
-import com.project.siakad.model.ApiResponse;
 import com.project.siakad.service.GuruService;
 import com.project.siakad.util.ResponseUtil;
 
@@ -31,37 +28,31 @@ public class GuruController {
     public ResponseEntity<?> getGuruById(@PathVariable Integer id) {
         try {
             Guru guru = guruService.getGuruById(id);
-            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, guru);
-        } catch (ResourceNotFoundException e) {
-            ApiResponse response = new ApiResponse(
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.name(),
-                Map.of("general", new String[]{e.getMessage()})
+            return ResponseUtil.generateSuccessResponse(
+                HttpStatus.OK, 
+                guru
             );
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        } catch (ResourceNotFoundException e) {
+            return ResponseUtil.generateErrorResponse(
+                HttpStatus.NOT_FOUND, 
+                e.getMessage()
+            );
         }
     }
     
     @GetMapping("/getAllGuru")
     public ResponseEntity<?> getAllGuru () {
-        try {
-            List<Guru> guruList = guruService.getAllGuru();
-            if (guruList.isEmpty()) {
-                ApiResponse response = new ApiResponse(
-                    HttpStatus.NOT_FOUND.value(),
-                    HttpStatus.NOT_FOUND.name(),
-                    Map.of("general", new String[]{"No data found for List Guru"})
-                );
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-            }
-            return ResponseEntity.ok(guruList);
-        } catch (ResourceNotFoundException e) {
-            ApiResponse response = new ApiResponse(
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.name(),
-                Map.of("general", new String[]{e.getMessage()})
+        List<Guru> guruList = guruService.getAllGuru();
+        if (guruList.isEmpty()) {
+            return ResponseUtil.generateErrorResponse(
+                HttpStatus.NOT_FOUND, 
+                "No data found for List Guru"
             );
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        } else {
+            return ResponseUtil.generateSuccessResponse(
+                HttpStatus.OK, 
+                guruList
+            );
         }
     }
 
@@ -69,14 +60,15 @@ public class GuruController {
     public ResponseEntity<?> addGuru(@Valid @RequestBody Guru guru) {
         try {
             Guru newGuru = guruService.addGuru(guru);
-            return ResponseEntity.ok(newGuru);
-        } catch (ResourceNotFoundException e) {
-            ApiResponse response = new ApiResponse(
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.name(),
-                Map.of("general", new String[]{e.getMessage()})
+            return ResponseUtil.generateSuccessResponse(
+                HttpStatus.OK, 
+                newGuru
             );
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        } catch (ResourceNotFoundException e) {
+            return ResponseUtil.generateErrorResponse(
+                HttpStatus.NOT_FOUND, 
+                e.getMessage()
+            );
         }
     }
 
@@ -84,14 +76,15 @@ public class GuruController {
     public ResponseEntity<?> updateGuru(@PathVariable Integer id, @Valid @RequestBody Guru guru) {
         try {
             Guru updatedGuru = guruService.updateGuru(id, guru);
-            return ResponseEntity.ok(updatedGuru);
-        } catch (ResourceNotFoundException e) {
-            ApiResponse response = new ApiResponse(
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.name(),
-                Map.of("general", new String[]{e.getMessage()})
+            return ResponseUtil.generateSuccessResponse(
+                HttpStatus.OK, 
+                updatedGuru
             );
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        } catch (ResourceNotFoundException e) {
+            return ResponseUtil.generateErrorResponse(
+                HttpStatus.NOT_FOUND, 
+                e.getMessage()
+            );
         }
     }
 
@@ -100,14 +93,15 @@ public class GuruController {
     public ResponseEntity<?> deleteGuruById(@PathVariable Integer id) {
         try {
             Guru deletedGuru = guruService.deleteGuruById(id);
-            return ResponseEntity.ok(deletedGuru);
-        } catch (ResourceNotFoundException e) {
-            ApiResponse response = new ApiResponse(
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.name(),
-                Map.of("general", new String[]{e.getMessage()})
+            return ResponseUtil.generateSuccessResponse(
+                HttpStatus.OK, 
+                deletedGuru
             );
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        } catch (ResourceNotFoundException e) {
+            return ResponseUtil.generateErrorResponse(
+                HttpStatus.NOT_FOUND, 
+                e.getMessage()
+            );
         }
     }
 }

@@ -1,7 +1,6 @@
 package com.project.siakad.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,10 @@ public class KelasController {
     public ResponseEntity<?> getKelasById(@PathVariable Integer id) {
         try {
             Kelas kelas = kelasService.getKelasById(id);
-            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, kelas);
+            return ResponseUtil.generateSuccessResponse(
+                HttpStatus.OK, 
+                kelas
+            );
         } catch (ResourceNotFoundException e) {
             return ResponseUtil.generateErrorResponse(
                 HttpStatus.NOT_FOUND, 
@@ -41,19 +43,16 @@ public class KelasController {
     
     @GetMapping("/getAllKelas")
     public ResponseEntity<?> getAllKelas () {
-        try {
-            List<Kelas> kelasList = kelasService.getAllKelas();
-            if (kelasList.isEmpty()) {
-                return ResponseUtil.generateErrorResponse(
-                    HttpStatus.NOT_FOUND, 
-                    "No data found for List Guru"
-                );
-            }
-            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, kelasList);
-        } catch (ResourceNotFoundException e) {
+        List<Kelas> kelasList = kelasService.getAllKelas();
+        if (kelasList.isEmpty()) {
             return ResponseUtil.generateErrorResponse(
                 HttpStatus.NOT_FOUND, 
-                e.getMessage()
+                "No data found for List Kelas"
+            );
+        } else {
+            return ResponseUtil.generateSuccessResponse(
+                HttpStatus.OK, 
+                kelasList
             );
         }
     }
@@ -62,7 +61,10 @@ public class KelasController {
     public ResponseEntity<?> addKelas(@Valid @RequestBody Kelas kelas) {
         try {
             Kelas newKelas = kelasService.addKelas(kelas);
-            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, newKelas);
+            return ResponseUtil.generateSuccessResponse(
+                HttpStatus.OK, 
+                newKelas
+            );
         } catch (ResourceNotFoundException e) {
             return ResponseUtil.generateErrorResponse(
                 HttpStatus.NOT_FOUND, 
@@ -75,7 +77,10 @@ public class KelasController {
     public ResponseEntity<?> updateKelas(@PathVariable Integer id, @Valid @RequestBody Kelas kelas) {
         try {
             Kelas updatedKelas = kelasService.updateKelas(id, kelas);
-            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, updatedKelas);
+            return ResponseUtil.generateSuccessResponse(
+                HttpStatus.OK, 
+                updatedKelas
+            );
         } catch (ResourceNotFoundException e) {
             return ResponseUtil.generateErrorResponse(
                 HttpStatus.NOT_FOUND, 
@@ -89,7 +94,10 @@ public class KelasController {
     public ResponseEntity<?> deleteKelasById(@PathVariable Integer id) {
         try {
             Kelas deletedKelas = kelasService.deleteKelasById(id);
-            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, deletedKelas);
+            return ResponseUtil.generateSuccessResponse(
+                HttpStatus.OK, 
+                deletedKelas
+            );
         } catch (ResourceNotFoundException e) {
             return ResponseUtil.generateErrorResponse(
                 HttpStatus.NOT_FOUND, 

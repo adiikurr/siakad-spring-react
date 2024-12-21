@@ -1,8 +1,6 @@
 package com.project.siakad.controller;
 
 import java.util.List;
-import java.util.Map;
-
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.project.siakad.exception.ResourceNotFoundException;
 import com.project.siakad.model.Siswa;
-import com.project.siakad.model.ApiResponse;
 import com.project.siakad.service.SiswaService;
+import com.project.siakad.util.ResponseUtil;
 
 @Controller
 @RequestMapping("api/siswa")
@@ -30,37 +28,31 @@ public class SiswaController {
     public ResponseEntity<?> getSiswaById(@PathVariable Integer id) {
         try {
             Siswa siswa = siswaService.getSiswaById(id);
-            return ResponseEntity.ok(siswa);
-        } catch (ResourceNotFoundException e) {
-            ApiResponse response = new ApiResponse(
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.name(),
-                Map.of("general", new String[]{e.getMessage()})
+            return ResponseUtil.generateSuccessResponse(
+                HttpStatus.OK, 
+                siswa
             );
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        } catch (ResourceNotFoundException e) {
+            return ResponseUtil.generateErrorResponse(
+                HttpStatus.NOT_FOUND, 
+                e.getMessage()
+            );
         }
     }
     
     @GetMapping("/getAllSiswa")
     public ResponseEntity<?> getAllSiswa () {
-        try {
-            List<Siswa> siswaList = siswaService.getAllSiswa();
-            if (siswaList.isEmpty()) {
-                ApiResponse response = new ApiResponse(
-                    HttpStatus.NOT_FOUND.value(),
-                    HttpStatus.NOT_FOUND.name(),
-                    Map.of("general", new String[]{"No data found for List Siswa"})
-                );
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-            }
-            return ResponseEntity.ok(siswaList);
-        } catch (ResourceNotFoundException e) {
-            ApiResponse response = new ApiResponse(
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.name(),
-                Map.of("general", new String[]{e.getMessage()})
+        List<Siswa> siswaList = siswaService.getAllSiswa();
+        if (siswaList.isEmpty()) {
+            return ResponseUtil.generateErrorResponse(
+                HttpStatus.NOT_FOUND, 
+                "No data found for List Siswa"
             );
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        } else {
+            return ResponseUtil.generateSuccessResponse(
+                HttpStatus.OK, 
+                siswaList
+            );
         }
     }
 
@@ -68,14 +60,15 @@ public class SiswaController {
     public ResponseEntity<?> addSiswa(@Valid @RequestBody Siswa siswa) {
         try {
             Siswa newSiswa = siswaService.addSiswa(siswa);
-            return ResponseEntity.ok(newSiswa);
-        } catch (ResourceNotFoundException e) {
-            ApiResponse response = new ApiResponse(
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.name(),
-                Map.of("general", new String[]{e.getMessage()})
+            return ResponseUtil.generateSuccessResponse(
+                HttpStatus.OK, 
+                newSiswa
             );
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        } catch (ResourceNotFoundException e) {
+            return ResponseUtil.generateErrorResponse(
+                HttpStatus.NOT_FOUND, 
+                e.getMessage()
+            );
         }
     }
 
@@ -83,14 +76,15 @@ public class SiswaController {
     public ResponseEntity<?> updateSiswa(@PathVariable Integer id, @Valid @RequestBody Siswa siswa) {
         try {
             Siswa updatedSiswa = siswaService.updateSiswa(id, siswa);
-            return ResponseEntity.ok(updatedSiswa);
-        } catch (ResourceNotFoundException e) {
-            ApiResponse response = new ApiResponse(
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.name(),
-                Map.of("general", new String[]{e.getMessage()})
+            return ResponseUtil.generateSuccessResponse(
+                HttpStatus.OK, 
+                updatedSiswa
             );
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        } catch (ResourceNotFoundException e) {
+            return ResponseUtil.generateErrorResponse(
+                HttpStatus.NOT_FOUND, 
+                e.getMessage()
+            );
         }
     }
 
@@ -99,14 +93,15 @@ public class SiswaController {
     public ResponseEntity<?> deleteSiswaById(@PathVariable Integer id) {
         try {
             Siswa deletedSiswa = siswaService.deleteSiswaById(id);
-            return ResponseEntity.ok(deletedSiswa);
-        } catch (ResourceNotFoundException e) {
-            ApiResponse response = new ApiResponse(
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.name(),
-                Map.of("general", new String[]{e.getMessage()})
+            return ResponseUtil.generateSuccessResponse(
+                HttpStatus.OK, 
+                deletedSiswa
             );
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        } catch (ResourceNotFoundException e) {
+            return ResponseUtil.generateErrorResponse(
+                HttpStatus.NOT_FOUND, 
+                e.getMessage()
+            );
         }
     }
 }
