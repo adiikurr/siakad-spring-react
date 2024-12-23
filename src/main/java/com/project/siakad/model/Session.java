@@ -14,8 +14,8 @@ public class Session {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Integer session_id;
     
     @Column(unique = true) @NotNull private String token;
-    @Column(unique = true) @NotNull private Integer user_id;
-    @Column(unique = true) @NotNull private String role;
+    @Column(unique = true) private Integer user_id;
+    @Column private String role;
     @Column private LocalDateTime sessionStartTime;
     @Column private LocalDateTime sessionEndTime;
 
