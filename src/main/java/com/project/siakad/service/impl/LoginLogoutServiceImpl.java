@@ -7,6 +7,7 @@ import java.util.UUID;
 import javax.security.auth.login.LoginException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.project.siakad.exception.ResourceNotFoundException;
 import com.project.siakad.model.Guru;
@@ -17,6 +18,7 @@ import com.project.siakad.repository.SessionRepo;
 import com.project.siakad.repository.UsersRepo;
 import com.project.siakad.service.LoginLogoutService;
 
+@Service
 public class LoginLogoutServiceImpl implements LoginLogoutService {
     @Autowired private SessionRepo sessionRepo;
     @Autowired private UsersRepo usersRepo;
@@ -29,7 +31,7 @@ public class LoginLogoutServiceImpl implements LoginLogoutService {
             throw new ResourceNotFoundException("Username not found");
         }
         Users existingUsers = user.get();
-        Optional<Session> opt = sessionRepo.findByUserId(existingUsers.getUser_id());
+        Optional<Session> opt = sessionRepo.findById(existingUsers.getUser_id());
 
         if (opt.isPresent()){
             Session sessionUser = opt.get();

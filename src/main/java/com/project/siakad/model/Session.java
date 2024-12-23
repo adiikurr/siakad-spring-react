@@ -3,11 +3,13 @@ package com.project.siakad.model;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 
+@Entity
 public class Session {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Integer session_id;
     
@@ -47,7 +49,7 @@ public class Session {
     public void setSessionStartTime(LocalDateTime sessionStartTime) {
         this.sessionStartTime = sessionStartTime;
     }
-    
+
     public LocalDateTime getSessionEndTime() {
         return sessionEndTime;
     }
