@@ -5,16 +5,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.security.auth.login.LoginException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.siakad.exception.ResourceNotFoundException;
-import com.project.siakad.model.Guru;
 import com.project.siakad.model.Session;
 import com.project.siakad.model.Users;
-import com.project.siakad.repository.GuruRepo;
 import com.project.siakad.repository.SessionRepo;
 import com.project.siakad.repository.UsersRepo;
 import com.project.siakad.service.LoginLogoutService;

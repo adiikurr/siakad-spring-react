@@ -14,7 +14,7 @@ import jakarta.validation.constraints.NotNull;
 public class Guru {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Integer guru_id;
     
-    @Column @NotNull private Integer nip;
+    @Column(unique = true) @NotNull private Integer nip;
     @Column @NotNull private String nama_guru;
     @Column @NotNull private Integer mapel_id;
     @Column @NotNull private String gender;

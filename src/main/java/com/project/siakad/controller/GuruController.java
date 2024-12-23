@@ -61,7 +61,7 @@ public class GuruController {
         try {
             Guru newGuru = guruService.addGuru(guru);
             return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
+                HttpStatus.CREATED, 
                 newGuru
             );
         } catch (ResourceNotFoundException e) {
