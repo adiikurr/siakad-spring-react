@@ -2,13 +2,17 @@ package com.project.siakad.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.project.siakad.exception.DuplicateResourceException;
 import com.project.siakad.exception.ResourceNotFoundException;
 import com.project.siakad.model.Guru;
+import com.project.siakad.model.Users;
 import com.project.siakad.repository.GuruRepo;
 import com.project.siakad.service.GuruService;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GuruServiceImpl implements GuruService {
@@ -24,7 +28,10 @@ public class GuruServiceImpl implements GuruService {
         return GuruRepo.findAll();
     }
     @Override
-    public Guru addGuru (Guru guru) {   
+    public Guru addGuru (Guru guru) {
+        if(GuruRepo.existsByNip(guru.getNip())) { 
+            throw new DuplicateResourceException("NIP " + guru.getNip() + " already exist");
+        }
         guru.setCreated_at(LocalDateTime.now());
         return GuruRepo.save(guru);
     }

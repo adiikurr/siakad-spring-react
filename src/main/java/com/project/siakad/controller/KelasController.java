@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.project.siakad.exception.DuplicateResourceException;
 import com.project.siakad.exception.ResourceNotFoundException;
 import com.project.siakad.model.Kelas;
 import com.project.siakad.service.KelasService;
@@ -62,12 +63,12 @@ public class KelasController {
         try {
             Kelas newKelas = kelasService.addKelas(kelas);
             return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
+                HttpStatus.CREATED, 
                 newKelas
             );
-        } catch (ResourceNotFoundException e) {
+        } catch (DuplicateResourceException e) {
             return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
+                HttpStatus.CONFLICT, 
                 e.getMessage()
             );
         }

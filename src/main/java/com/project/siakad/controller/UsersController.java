@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.project.siakad.exception.DuplicateResourceException;
 import com.project.siakad.exception.ResourceNotFoundException;
 import com.project.siakad.model.Users;
 import com.project.siakad.service.UsersService;
@@ -61,12 +62,12 @@ public class UsersController {
         try {
             Users newUsers = usersService.addUsers(users);
             return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
+                HttpStatus.CREATED, 
                 newUsers
             );
-        } catch (ResourceNotFoundException e) {
+        } catch (DuplicateResourceException e) {
             return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
+                HttpStatus.CONFLICT, 
                 e.getMessage()
             );
         }
