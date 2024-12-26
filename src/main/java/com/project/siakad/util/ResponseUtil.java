@@ -13,7 +13,7 @@ public class ResponseUtil {
         ApiResponse response = new ApiResponse(
             status.value(),
             status.name(),
-            Map.of("general", new String[]{message})
+            Map.of("message", new String[]{message})
         );
         return ResponseEntity.status(status).body(response);
     }

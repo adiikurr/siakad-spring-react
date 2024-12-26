@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.project.siakad.exception.BadCredentialException;
 import com.project.siakad.exception.ResourceNotFoundException;
 import com.project.siakad.model.Session;
 import com.project.siakad.model.Users;
@@ -25,12 +26,17 @@ public class LoginController {
         try {
             Session loginOperatorUsers = loginLogoutService.LoginOperator(users);
             return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
+                HttpStatus.ACCEPTED, 
                 loginOperatorUsers
             );
         } catch (ResourceNotFoundException e) {
             return ResponseUtil.generateErrorResponse(
                 HttpStatus.NOT_FOUND, 
+                e.getMessage()
+            );
+        } catch (BadCredentialException e) {
+            return ResponseUtil.generateErrorResponse(
+                HttpStatus.UNAUTHORIZED, 
                 e.getMessage()
             );
         }
@@ -41,12 +47,17 @@ public class LoginController {
         try {
             Session loginGuruUsers = loginLogoutService.LoginGuru(users);
             return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
+                HttpStatus.ACCEPTED, 
                 loginGuruUsers
             );
         } catch (ResourceNotFoundException e) {
             return ResponseUtil.generateErrorResponse(
                 HttpStatus.NOT_FOUND, 
+                e.getMessage()
+            );
+        } catch (BadCredentialException e) {
+            return ResponseUtil.generateErrorResponse(
+                HttpStatus.UNAUTHORIZED, 
                 e.getMessage()
             );
         }
@@ -57,12 +68,17 @@ public class LoginController {
         try {
             Session loginSiswaUsers = loginLogoutService.LoginSiswa(users);
             return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
+                HttpStatus.ACCEPTED, 
                 loginSiswaUsers
             );
         } catch (ResourceNotFoundException e) {
             return ResponseUtil.generateErrorResponse(
                 HttpStatus.NOT_FOUND, 
+                e.getMessage()
+            );
+        } catch (BadCredentialException e) {
+            return ResponseUtil.generateErrorResponse(
+                HttpStatus.UNAUTHORIZED, 
                 e.getMessage()
             );
         }

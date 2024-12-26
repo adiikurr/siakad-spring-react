@@ -6,13 +6,11 @@ import org.springframework.stereotype.Service;
 import com.project.siakad.exception.DuplicateResourceException;
 import com.project.siakad.exception.ResourceNotFoundException;
 import com.project.siakad.model.Nilai;
-import com.project.siakad.model.Users;
 import com.project.siakad.repository.NilaiRepo;
 import com.project.siakad.service.NilaiService;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class NilaiServiceImpl implements NilaiService {

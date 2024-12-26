@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.project.siakad.exception.BadCredentialException;
 import com.project.siakad.exception.ResourceNotFoundException;
 import com.project.siakad.model.Session;
 import com.project.siakad.model.Users;
@@ -57,7 +58,7 @@ public class LoginLogoutServiceImpl implements LoginLogoutService {
 			return sessionRepo.save(newSession);
 		}
 		else {
-			throw new ResourceNotFoundException("tes");
+			throw new BadCredentialException("Password Invalid!");
 		}
     }
 
@@ -98,7 +99,7 @@ public class LoginLogoutServiceImpl implements LoginLogoutService {
 			return sessionRepo.save(newSession);
 		}
 		else {
-			throw new ResourceNotFoundException("tes");
+			throw new BadCredentialException("Password Invalid!");
 		}
     }
 
@@ -107,7 +108,7 @@ public class LoginLogoutServiceImpl implements LoginLogoutService {
         Optional<Users> user = usersRepo.findByUsername(users.getUsername());
         
         if(user.isEmpty()) {
-            throw new ResourceNotFoundException("Username not found");
+            throw new ResourceNotFoundException();
         }
         Users existingUsers = user.get();
         Optional<Session> opt = sessionRepo.findById(existingUsers.getUser_id());
@@ -139,7 +140,7 @@ public class LoginLogoutServiceImpl implements LoginLogoutService {
 			return sessionRepo.save(newSession);
 		}
 		else {
-			throw new ResourceNotFoundException("tes");
+			throw new BadCredentialException("Password Invalid!");
 		}
     }
 
@@ -153,7 +154,7 @@ public class LoginLogoutServiceImpl implements LoginLogoutService {
 		Optional<Session> opt = sessionRepo.findByToken(token);
 		
 		if(!opt.isPresent())
-        throw new ResourceNotFoundException("tes");
+        	throw new ResourceNotFoundException("Session not found");
 		
 		Session session = opt.get();
 		
@@ -174,7 +175,7 @@ public class LoginLogoutServiceImpl implements LoginLogoutService {
 		Optional<Session> opt = sessionRepo.findByToken(token);
 		
 		if(!opt.isPresent())
-        throw new ResourceNotFoundException("tes");
+        	throw new ResourceNotFoundException("Session not found");
 		
 		Session session = opt.get();
 		
@@ -189,19 +190,7 @@ public class LoginLogoutServiceImpl implements LoginLogoutService {
 	public Session logoutSiswa(Session sessionToken) {
 		
 		String token = sessionToken.getToken();
-		
 		checkTokenStatus(token);
-		
-		Optional<Session> opt = sessionRepo.findByToken(token);
-		
-		if(!opt.isPresent())
-        throw new ResourceNotFoundException("tes");
-		
-		Session session = opt.get();
-		
-		sessionRepo.delete(session);
-		
-		// sessionToken.setMessage("Logged out sucessfully.");
 		
 		return sessionToken;
 	}
@@ -222,10 +211,10 @@ public class LoginLogoutServiceImpl implements LoginLogoutService {
 			
 			deleteExpiredTokens();
 			if(flag)
-            throw new ResourceNotFoundException("tes");
+            	throw new ResourceNotFoundException("Session expired");
 		}
 		else {
-			throw new ResourceNotFoundException("tes");
+			throw new ResourceNotFoundException("Session not found");
 		}
 		
 	}

@@ -29,9 +29,6 @@ public class UlanganServiceImpl implements UlanganService {
     }
     @Override
     public Ulangan addUlangan (Ulangan ulangan) {
-        // if(UlanganRepo.existsByNip(ulangan.getNip())) { 
-        //     throw new DuplicateResourceException("NIP " + ulangan.getNip() + " already exist");
-        // }
         ulangan.setCreated_at(LocalDateTime.now());
         return UlanganRepo.save(ulangan);
     }
