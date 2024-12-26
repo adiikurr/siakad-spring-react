@@ -8,8 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
-import com.project.siakad.exception.BadCredentialException;
+import com.project.siakad.exception.LoginException;
 import com.project.siakad.exception.ResourceNotFoundException;
 import com.project.siakad.model.Session;
 import com.project.siakad.model.Users;
@@ -34,7 +33,7 @@ public class LoginController {
                 HttpStatus.NOT_FOUND, 
                 e.getMessage()
             );
-        } catch (BadCredentialException e) {
+        } catch (LoginException e) {
             return ResponseUtil.generateErrorResponse(
                 HttpStatus.UNAUTHORIZED, 
                 e.getMessage()
@@ -55,7 +54,7 @@ public class LoginController {
                 HttpStatus.NOT_FOUND, 
                 e.getMessage()
             );
-        } catch (BadCredentialException e) {
+        } catch (LoginException e) {
             return ResponseUtil.generateErrorResponse(
                 HttpStatus.UNAUTHORIZED, 
                 e.getMessage()
@@ -76,7 +75,7 @@ public class LoginController {
                 HttpStatus.NOT_FOUND, 
                 e.getMessage()
             );
-        } catch (BadCredentialException e) {
+        } catch (LoginException e) {
             return ResponseUtil.generateErrorResponse(
                 HttpStatus.UNAUTHORIZED, 
                 e.getMessage()

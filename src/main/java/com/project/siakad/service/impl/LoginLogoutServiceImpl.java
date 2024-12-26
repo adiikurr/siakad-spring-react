@@ -7,8 +7,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.project.siakad.exception.BadCredentialException;
+import com.project.siakad.exception.LoginException;
 import com.project.siakad.exception.ResourceNotFoundException;
 import com.project.siakad.model.Session;
 import com.project.siakad.model.Users;
@@ -58,7 +57,7 @@ public class LoginLogoutServiceImpl implements LoginLogoutService {
 			return sessionRepo.save(newSession);
 		}
 		else {
-			throw new BadCredentialException("Password Invalid!");
+			throw new LoginException("Password Invalid!");
 		}
     }
 
@@ -99,7 +98,7 @@ public class LoginLogoutServiceImpl implements LoginLogoutService {
 			return sessionRepo.save(newSession);
 		}
 		else {
-			throw new BadCredentialException("Password Invalid!");
+			throw new LoginException("Password Invalid!");
 		}
     }
 
@@ -140,7 +139,7 @@ public class LoginLogoutServiceImpl implements LoginLogoutService {
 			return sessionRepo.save(newSession);
 		}
 		else {
-			throw new BadCredentialException("Password Invalid!");
+			throw new LoginException("Password Invalid!");
 		}
     }
 

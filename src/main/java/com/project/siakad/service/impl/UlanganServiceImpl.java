@@ -3,16 +3,13 @@ package com.project.siakad.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.project.siakad.exception.DuplicateResourceException;
 import com.project.siakad.exception.ResourceNotFoundException;
 import com.project.siakad.model.Ulangan;
-import com.project.siakad.model.Users;
 import com.project.siakad.repository.UlanganRepo;
 import com.project.siakad.service.UlanganService;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UlanganServiceImpl implements UlanganService {
