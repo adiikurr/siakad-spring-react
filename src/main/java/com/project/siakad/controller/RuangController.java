@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.project.siakad.exception.DuplicateResourceException;
 import com.project.siakad.exception.ResourceNotFoundException;
@@ -27,7 +28,7 @@ public class RuangController {
     @Autowired private RuangService ruangService;
 
     @GetMapping("/getRuangById/{id}")
-    public ResponseEntity<?> getRuangById(@PathVariable Integer id) {
+    public ResponseEntity<?> getRuangById(@PathVariable Integer id, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
             Ruang ruang = ruangService.getRuangById(id);
             return ResponseUtil.generateSuccessResponse(
@@ -43,7 +44,7 @@ public class RuangController {
     }
     
     @GetMapping("/getAllRuang")
-    public ResponseEntity<?> getAllRuang () {
+    public ResponseEntity<?> getAllRuang (@RequestHeader("token") String token, @RequestHeader("role") String role) {
         List<Ruang> ruangList = ruangService.getAllRuang();
         if (ruangList.isEmpty()) {
             return ResponseUtil.generateErrorResponse(
@@ -59,7 +60,7 @@ public class RuangController {
     }
 
     @PostMapping("/addRuang")
-    public ResponseEntity<?> addRuang(@Valid @RequestBody Ruang ruang) {
+    public ResponseEntity<?> addRuang(@Valid @RequestBody Ruang ruang, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
             Ruang newRuang = ruangService.addRuang(ruang);
             return ResponseUtil.generateSuccessResponse(
@@ -75,7 +76,7 @@ public class RuangController {
     }
 
     @PutMapping("/updateRuang/{id}")
-    public ResponseEntity<?> updateRuang(@PathVariable Integer id, @Valid @RequestBody Ruang ruang) {
+    public ResponseEntity<?> updateRuang(@PathVariable Integer id, @Valid @RequestBody Ruang ruang, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
             Ruang updatedRuang = ruangService.updateRuang(id, ruang);
             return ResponseUtil.generateSuccessResponse(
@@ -92,7 +93,7 @@ public class RuangController {
 
 
     @DeleteMapping("/deleteRuangById/{id}")
-    public ResponseEntity<?> deleteRuangById(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteRuangById(@PathVariable Integer id, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
             Ruang deletedRuang = ruangService.deleteRuangById(id);
             return ResponseUtil.generateSuccessResponse(

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.project.siakad.exception.DuplicateResourceException;
-import com.project.siakad.exception.ForbiddenException;
 import com.project.siakad.exception.ResourceNotFoundException;
 import com.project.siakad.model.Guru;
 import com.project.siakad.service.GuruService;
@@ -30,35 +29,25 @@ public class GuruController {
     @Autowired private SessionService sessionService;
 
     @GetMapping("/getGuruById/{id}")
-    public ResponseEntity<?> getGuruById(@PathVariable Integer id) {
+    public ResponseEntity<?> getGuruById(@PathVariable Integer id, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
+            sessionService.validateTokenAndRole(token, role);
             Guru guru = guruService.getGuruById(id);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                guru
-            );
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, guru);
         } catch (ResourceNotFoundException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                e.getMessage()
-            );
+            throw new ResourceNotFoundException();
         }
     }
     
     @GetMapping("/getAllGuru")
-    public ResponseEntity<?> getAllGuru () {
-        List<Guru> guruList = guruService.getAllGuru();
-        if (guruList.isEmpty()) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                "No data found for List Guru"
-            );
-        } else {
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                guruList
-            );
-        }
+    public ResponseEntity<?> getAllGuru (@RequestHeader("token") String token, @RequestHeader("role") String role) {
+            sessionService.validateTokenAndRole(token, role);
+            List<Guru> guruList = guruService.getAllGuru();
+            if (guruList.isEmpty()) {
+                throw new ResourceNotFoundException();
+            } else {
+                return ResponseUtil.generateSuccessResponse(HttpStatus.OK, guruList);
+            }
     }
 
     @PostMapping("/addGuru")
@@ -66,53 +55,31 @@ public class GuruController {
         try {
             sessionService.validateTokenAndRole(token, role);
             Guru newGuru = guruService.addGuru(guru);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.CREATED, 
-                newGuru
-            );
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, newGuru);
         } catch (DuplicateResourceException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.CONFLICT, 
-                e.getMessage()
-            );
-        } catch (ForbiddenException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.FORBIDDEN, 
-                e.getMessage()
-            );
+            throw new DuplicateResourceException();
         }
     }
-
+    
     @PutMapping("/updateGuru/{id}")
-    public ResponseEntity<?> updateGuru(@PathVariable Integer id, @Valid @RequestBody Guru guru) {
+    public ResponseEntity<?> updateGuru(@PathVariable Integer id, @Valid @RequestBody Guru guru, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
+            sessionService.validateTokenAndRole(token, role);
             Guru updatedGuru = guruService.updateGuru(id, guru);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                updatedGuru
-            );
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, updatedGuru);
         } catch (ResourceNotFoundException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                e.getMessage()
-            );
+            throw new ResourceNotFoundException();
         }
     }
-
-
+    
     @DeleteMapping("/deleteGuruById/{id}")
-    public ResponseEntity<?> deleteGuruById(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteGuruById(@PathVariable Integer id, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
+            sessionService.validateTokenAndRole(token, role);
             Guru deletedGuru = guruService.deleteGuruById(id);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                deletedGuru
-            );
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, deletedGuru);
         } catch (ResourceNotFoundException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                e.getMessage()
-            );
+            throw new ResourceNotFoundException();
         }
     }
 }

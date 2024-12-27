@@ -13,11 +13,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.project.siakad.exception.DuplicateResourceException;
 import com.project.siakad.exception.ResourceNotFoundException;
 import com.project.siakad.model.Jadwal;
 import com.project.siakad.service.JadwalService;
+import com.project.siakad.service.SessionService;
 import com.project.siakad.util.ResponseUtil;
 
 import jakarta.validation.Valid;
@@ -26,10 +28,12 @@ import jakarta.validation.Valid;
 @RequestMapping("api/jadwal")
 public class JadwalController {
     @Autowired private JadwalService jadwalService;
+    @Autowired private SessionService sessionService;
 
     @GetMapping("/getJadwalById/{id}")
-    public ResponseEntity<?> getJadwalById(@PathVariable Integer id) {
+    public ResponseEntity<?> getJadwalById(@PathVariable Integer id, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
+            sessionService.validateTokenAndRole(token, role);
             Jadwal jadwal = jadwalService.getJadwalById(id);
             return ResponseUtil.generateSuccessResponse(
                 HttpStatus.OK, 
@@ -44,7 +48,8 @@ public class JadwalController {
     }
     
     @GetMapping("/getAllJadwal")
-    public ResponseEntity<?> getAllJadwal () {
+    public ResponseEntity<?> getAllJadwal (@RequestHeader("token") String token, @RequestHeader("role") String role) {
+        sessionService.validateTokenAndRole(token, role);
         List<Jadwal> jadwalList = jadwalService.getAllJadwal();
         if (jadwalList.isEmpty()) {
             return ResponseUtil.generateErrorResponse(
@@ -60,8 +65,9 @@ public class JadwalController {
     }
 
     @PostMapping("/addJadwal")
-    public ResponseEntity<?> addJadwal(@Valid @RequestBody Jadwal jadwal) {
+    public ResponseEntity<?> addJadwal(@Valid @RequestBody Jadwal jadwal, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
+            sessionService.validateTokenAndRole(token, role);
             Jadwal newJadwal = jadwalService.addJadwal(jadwal);
             return ResponseUtil.generateSuccessResponse(
                 HttpStatus.CREATED, 
@@ -76,8 +82,9 @@ public class JadwalController {
     }
 
     @PutMapping("/updateJadwal/{id}")
-    public ResponseEntity<?> updateJadwal(@PathVariable Integer id, @Valid @RequestBody Jadwal jadwal) {
+    public ResponseEntity<?> updateJadwal(@PathVariable Integer id, @Valid @RequestBody Jadwal jadwal, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
+            sessionService.validateTokenAndRole(token, role);
             Jadwal updatedJadwal = jadwalService.updateJadwal(id, jadwal);
             return ResponseUtil.generateSuccessResponse(
                 HttpStatus.OK, 
@@ -93,8 +100,9 @@ public class JadwalController {
 
 
     @DeleteMapping("/deleteJadwalById/{id}")
-    public ResponseEntity<?> deleteJadwalById(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteJadwalById(@PathVariable Integer id, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
+            sessionService.validateTokenAndRole(token, role);
             Jadwal deletedJadwal = jadwalService.deleteJadwalById(id);
             return ResponseUtil.generateSuccessResponse(
                 HttpStatus.OK, 

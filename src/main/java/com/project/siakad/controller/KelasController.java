@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.project.siakad.exception.DuplicateResourceException;
 import com.project.siakad.exception.ResourceNotFoundException;
@@ -27,7 +28,7 @@ public class KelasController {
     @Autowired private KelasService kelasService;
 
     @GetMapping("/getKelasById/{id}")
-    public ResponseEntity<?> getKelasById(@PathVariable Integer id) {
+    public ResponseEntity<?> getKelasById(@PathVariable Integer id, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
             Kelas kelas = kelasService.getKelasById(id);
             return ResponseUtil.generateSuccessResponse(
@@ -43,7 +44,7 @@ public class KelasController {
     }
     
     @GetMapping("/getAllKelas")
-    public ResponseEntity<?> getAllKelas () {
+    public ResponseEntity<?> getAllKelas (@RequestHeader("token") String token, @RequestHeader("role") String role) {
         List<Kelas> kelasList = kelasService.getAllKelas();
         if (kelasList.isEmpty()) {
             return ResponseUtil.generateErrorResponse(
@@ -59,7 +60,7 @@ public class KelasController {
     }
 
     @PostMapping("/addKelas")
-    public ResponseEntity<?> addKelas(@Valid @RequestBody Kelas kelas) {
+    public ResponseEntity<?> addKelas(@Valid @RequestBody Kelas kelas, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
             Kelas newKelas = kelasService.addKelas(kelas);
             return ResponseUtil.generateSuccessResponse(
@@ -75,7 +76,7 @@ public class KelasController {
     }
 
     @PutMapping("/updateKelas/{id}")
-    public ResponseEntity<?> updateKelas(@PathVariable Integer id, @Valid @RequestBody Kelas kelas) {
+    public ResponseEntity<?> updateKelas(@PathVariable Integer id, @Valid @RequestBody Kelas kelas, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
             Kelas updatedKelas = kelasService.updateKelas(id, kelas);
             return ResponseUtil.generateSuccessResponse(
@@ -92,7 +93,7 @@ public class KelasController {
 
 
     @DeleteMapping("/deleteKelasById/{id}")
-    public ResponseEntity<?> deleteKelasById(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteKelasById(@PathVariable Integer id, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
             Kelas deletedKelas = kelasService.deleteKelasById(id);
             return ResponseUtil.generateSuccessResponse(

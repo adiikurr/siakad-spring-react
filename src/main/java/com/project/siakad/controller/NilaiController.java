@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.project.siakad.exception.ResourceNotFoundException;
 import com.project.siakad.model.Nilai;
@@ -21,7 +22,7 @@ public class NilaiController {
     @Autowired private NilaiService nilaiService;
 
     @GetMapping("/getNilaiById/{id}")
-    public ResponseEntity<?> getNilaiById(@PathVariable Integer id) {
+    public ResponseEntity<?> getNilaiById(@PathVariable Integer id, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
             Nilai nilai = nilaiService.getNilaiById(id);
             return ResponseUtil.generateSuccessResponse(
@@ -37,7 +38,7 @@ public class NilaiController {
     }
     
     @GetMapping("/getAllNilai")
-    public ResponseEntity<?> getAllNilai () {
+    public ResponseEntity<?> getAllNilai (@RequestHeader("token") String token, @RequestHeader("role") String role) {
         List<Nilai> nilaiList = nilaiService.getAllNilai();
         if (nilaiList.isEmpty()) {
             return ResponseUtil.generateErrorResponse(

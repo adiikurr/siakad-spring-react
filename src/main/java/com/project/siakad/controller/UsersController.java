@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.project.siakad.exception.DuplicateResourceException;
 import com.project.siakad.exception.ResourceNotFoundException;
@@ -26,7 +27,7 @@ public class UsersController {
     @Autowired private UsersService usersService;
 
     @GetMapping("/getUsersById/{id}")
-    public ResponseEntity<?> getUsersById(@PathVariable Integer id) {
+    public ResponseEntity<?> getUsersById(@PathVariable Integer id, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
             Users users = usersService.getUsersById(id);
             return ResponseUtil.generateSuccessResponse(
@@ -42,7 +43,7 @@ public class UsersController {
     }
     
     @GetMapping("/getAllUsers")
-    public ResponseEntity<?> getAllUsers () {
+    public ResponseEntity<?> getAllUsers (@RequestHeader("token") String token, @RequestHeader("role") String role) {
         List<Users> usersList = usersService.getAllUsers();
         if (usersList.isEmpty()) {
             return ResponseUtil.generateErrorResponse(
@@ -58,7 +59,7 @@ public class UsersController {
     }
 
     @PostMapping("/addUsers")
-    public ResponseEntity<?> addUsers(@Valid @RequestBody Users users) {
+    public ResponseEntity<?> addUsers(@Valid @RequestBody Users users, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
             Users newUsers = usersService.addUsers(users);
             return ResponseUtil.generateSuccessResponse(
@@ -74,7 +75,7 @@ public class UsersController {
     }
 
     @PutMapping("/updateUsers/{id}")
-    public ResponseEntity<?> updateUsers(@PathVariable Integer id, @Valid @RequestBody Users users) {
+    public ResponseEntity<?> updateUsers(@PathVariable Integer id, @Valid @RequestBody Users users, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
             Users updatedUsers = usersService.updateUsers(id, users);
             return ResponseUtil.generateSuccessResponse(
@@ -91,7 +92,7 @@ public class UsersController {
 
 
     @DeleteMapping("/deleteUsersById/{id}")
-    public ResponseEntity<?> deleteUsersById(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteUsersById(@PathVariable Integer id, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
             Users deletedUsers = usersService.deleteUsersById(id);
             return ResponseUtil.generateSuccessResponse(

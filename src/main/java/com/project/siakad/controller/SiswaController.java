@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.project.siakad.exception.DuplicateResourceException;
 import com.project.siakad.exception.ResourceNotFoundException;
@@ -26,7 +27,7 @@ public class SiswaController {
     @Autowired private SiswaService siswaService;
 
     @GetMapping("/getSiswaById/{id}")
-    public ResponseEntity<?> getSiswaById(@PathVariable Integer id) {
+    public ResponseEntity<?> getSiswaById(@PathVariable Integer id, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
             Siswa siswa = siswaService.getSiswaById(id);
             return ResponseUtil.generateSuccessResponse(
@@ -42,7 +43,7 @@ public class SiswaController {
     }
     
     @GetMapping("/getAllSiswa")
-    public ResponseEntity<?> getAllSiswa () {
+    public ResponseEntity<?> getAllSiswa (@RequestHeader("token") String token, @RequestHeader("role") String role) {
         List<Siswa> siswaList = siswaService.getAllSiswa();
         if (siswaList.isEmpty()) {
             return ResponseUtil.generateErrorResponse(
@@ -58,7 +59,7 @@ public class SiswaController {
     }
 
     @PostMapping("/addSiswa")
-    public ResponseEntity<?> addSiswa(@Valid @RequestBody Siswa siswa) {
+    public ResponseEntity<?> addSiswa(@Valid @RequestBody Siswa siswa, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
             Siswa newSiswa = siswaService.addSiswa(siswa);
             return ResponseUtil.generateSuccessResponse(
@@ -74,7 +75,7 @@ public class SiswaController {
     }
 
     @PutMapping("/updateSiswa/{id}")
-    public ResponseEntity<?> updateSiswa(@PathVariable Integer id, @Valid @RequestBody Siswa siswa) {
+    public ResponseEntity<?> updateSiswa(@PathVariable Integer id, @Valid @RequestBody Siswa siswa, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
             Siswa updatedSiswa = siswaService.updateSiswa(id, siswa);
             return ResponseUtil.generateSuccessResponse(
@@ -91,7 +92,7 @@ public class SiswaController {
 
 
     @DeleteMapping("/deleteSiswaById/{id}")
-    public ResponseEntity<?> deleteSiswaById(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteSiswaById(@PathVariable Integer id, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
             Siswa deletedSiswa = siswaService.deleteSiswaById(id);
             return ResponseUtil.generateSuccessResponse(

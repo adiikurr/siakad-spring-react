@@ -217,6 +217,7 @@ public class LoginLogoutServiceImpl implements LoginLogoutService {
 			
 			deleteExpiredTokens();
 			if(flag)
+				sessionRepo.delete(session);
             	throw new ResourceNotFoundException("Session expired");
 		}
 		else {

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.project.siakad.exception.ResourceNotFoundException;
 import com.project.siakad.model.Rapot;
@@ -21,7 +22,7 @@ public class RapotController {
     @Autowired private RapotService rapotService;
 
     @GetMapping("/getRapotById/{id}")
-    public ResponseEntity<?> getRapotById(@PathVariable Integer id) {
+    public ResponseEntity<?> getRapotById(@PathVariable Integer id, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
             Rapot rapot = rapotService.getRapotById(id);
             return ResponseUtil.generateSuccessResponse(
@@ -37,7 +38,7 @@ public class RapotController {
     }
     
     @GetMapping("/getAllRapot")
-    public ResponseEntity<?> getAllRapot () {
+    public ResponseEntity<?> getAllRapot (@RequestHeader("token") String token, @RequestHeader("role") String role) {
         List<Rapot> rapotList = rapotService.getAllRapot();
         if (rapotList.isEmpty()) {
             return ResponseUtil.generateErrorResponse(

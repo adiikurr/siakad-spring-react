@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.project.siakad.exception.ResourceNotFoundException;
 import com.project.siakad.model.Mapel;
@@ -21,7 +22,7 @@ public class MapelController {
     @Autowired private MapelService mapelService;
 
     @GetMapping("/getMapelById/{id}")
-    public ResponseEntity<?> getMapelById(@PathVariable Integer id) {
+    public ResponseEntity<?> getMapelById(@PathVariable Integer id, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
             Mapel mapel = mapelService.getMapelById(id);
             return ResponseUtil.generateSuccessResponse(
@@ -37,7 +38,7 @@ public class MapelController {
     }
     
     @GetMapping("/getAllMapel")
-    public ResponseEntity<?> getAllMapel () {
+    public ResponseEntity<?> getAllMapel (@RequestHeader("token") String token, @RequestHeader("role") String role) {
         List<Mapel> mapelList = mapelService.getAllMapel();
         if (mapelList.isEmpty()) {
             return ResponseUtil.generateErrorResponse(

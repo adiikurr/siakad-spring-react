@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.project.siakad.exception.ResourceNotFoundException;
 import com.project.siakad.model.Ulangan;
@@ -21,7 +22,7 @@ public class UlanganController {
     @Autowired private UlanganService ulanganService;
 
     @GetMapping("/getUlanganById/{id}")
-    public ResponseEntity<?> getUlanganById(@PathVariable Integer id) {
+    public ResponseEntity<?> getUlanganById(@PathVariable Integer id, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
             Ulangan ulangan = ulanganService.getUlanganById(id);
             return ResponseUtil.generateSuccessResponse(
@@ -37,7 +38,7 @@ public class UlanganController {
     }
     
     @GetMapping("/getAllUlangan")
-    public ResponseEntity<?> getAllUlangan () {
+    public ResponseEntity<?> getAllUlangan (@RequestHeader("token") String token, @RequestHeader("role") String role) {
         List<Ulangan> ulanganList = ulanganService.getAllUlangan();
         if (ulanganList.isEmpty()) {
             return ResponseUtil.generateErrorResponse(
