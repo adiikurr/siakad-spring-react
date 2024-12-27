@@ -20,12 +20,14 @@ import com.project.siakad.exception.ForbiddenException;
 import com.project.siakad.exception.ResourceNotFoundException;
 import com.project.siakad.model.Guru;
 import com.project.siakad.service.GuruService;
+import com.project.siakad.service.SessionService;
 import com.project.siakad.util.ResponseUtil;
 
 @Controller
 @RequestMapping("api/guru")
 public class GuruController {
     @Autowired private GuruService guruService;
+    @Autowired private SessionService sessionService;
 
     @GetMapping("/getGuruById/{id}")
     public ResponseEntity<?> getGuruById(@PathVariable Integer id) {
@@ -62,6 +64,7 @@ public class GuruController {
     @PostMapping("/addGuru")
     public ResponseEntity<?> addGuru(@Valid @RequestBody Guru guru, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
+            sessionService.validateTokenAndRole(token, role);
             Guru newGuru = guruService.addGuru(guru);
             return ResponseUtil.generateSuccessResponse(
                 HttpStatus.CREATED, 

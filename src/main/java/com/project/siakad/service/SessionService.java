@@ -8,4 +8,6 @@ public interface SessionService {
     public Session getSessionById(Integer sessionId);
 
     public List<Session> getAllSession();
+
+    public void validateTokenAndRole(String token, String requiredRole);
 }

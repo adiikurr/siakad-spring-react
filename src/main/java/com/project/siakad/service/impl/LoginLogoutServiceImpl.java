@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.project.siakad.exception.LoginException;
@@ -17,6 +19,7 @@ import com.project.siakad.service.LoginLogoutService;
 
 @Service
 public class LoginLogoutServiceImpl implements LoginLogoutService {
+	private static final Logger logger = LoggerFactory.getLogger(LoginLogoutServiceImpl.class);
     @Autowired private SessionRepo sessionRepo;
     @Autowired private UsersRepo usersRepo;
 
@@ -28,6 +31,8 @@ public class LoginLogoutServiceImpl implements LoginLogoutService {
             throw new ResourceNotFoundException("Username not found");
         }
         Users existingUsers = user.get();
+		existingUsers.getRole();
+		logger.info("Cek Logging: {}", existingUsers);
         Optional<Session> opt = sessionRepo.findById(existingUsers.getUser_id());
 
         if (opt.isPresent()){
@@ -69,6 +74,8 @@ public class LoginLogoutServiceImpl implements LoginLogoutService {
             throw new ResourceNotFoundException("Username not found");
         }
         Users existingUsers = user.get();
+		existingUsers.getRole();
+		logger.info("Cek Logging: {}", existingUsers);
         Optional<Session> opt = sessionRepo.findById(existingUsers.getUser_id());
 
         if (opt.isPresent()){

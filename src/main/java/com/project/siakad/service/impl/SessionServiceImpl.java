@@ -17,12 +17,13 @@ import java.util.List;
 public class SessionServiceImpl implements SessionService{
     @Autowired private SessionRepo SessionRepo;
 
+    @Override
     public void validateTokenAndRole(String token, String requiredRole) {
         Session session = SessionRepo.findByToken(token)
                 .orElseThrow(() -> new LoginException("Invalid token"));
 
         if (!session.getRole().equals(requiredRole)) {
-            throw new ForbiddenException("Access denied for role: " + session.getRole());
+            throw new ForbiddenException("Access denied for this role");
         }
 
         if (session.getSessionEndTime().isBefore(LocalDateTime.now())) {
