@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.project.siakad.exception.ResourceNotFoundException;
 import com.project.siakad.model.Ulangan;
+import com.project.siakad.service.SessionService;
 import com.project.siakad.service.UlanganService;
 import com.project.siakad.util.ResponseUtil;
 
@@ -20,36 +21,29 @@ import com.project.siakad.util.ResponseUtil;
 @RequestMapping("api/ulangan")
 public class UlanganController {
     @Autowired private UlanganService ulanganService;
+    @Autowired private SessionService sessionService;
 
     @GetMapping("/getUlanganById/{id}")
     public ResponseEntity<?> getUlanganById(@PathVariable Integer id, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
+            sessionService.validateTokenAndRole(token, role);
             Ulangan ulangan = ulanganService.getUlanganById(id);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                ulangan
-            );
+
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, ulangan);
         } catch (ResourceNotFoundException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                e.getMessage()
-            );
+            throw new ResourceNotFoundException();
         }
     }
     
     @GetMapping("/getAllUlangan")
     public ResponseEntity<?> getAllUlangan (@RequestHeader("token") String token, @RequestHeader("role") String role) {
+        sessionService.validateTokenAndRole(token, role);
         List<Ulangan> ulanganList = ulanganService.getAllUlangan();
+        
         if (ulanganList.isEmpty()) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                "No data found for List Ulangan"
-            );
+           throw new ResourceNotFoundException("No data found for List Ulangan");
         } else {
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                ulanganList
-            );
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, ulanganList);
         }
     }
 }

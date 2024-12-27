@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import com.project.siakad.exception.DuplicateResourceException;
 import com.project.siakad.exception.ResourceNotFoundException;
 import com.project.siakad.model.Users;
+import com.project.siakad.service.SessionService;
 import com.project.siakad.service.UsersService;
 import com.project.siakad.util.ResponseUtil;
 
@@ -25,68 +26,53 @@ import com.project.siakad.util.ResponseUtil;
 @RequestMapping("api/users")
 public class UsersController {
     @Autowired private UsersService usersService;
+    @Autowired private SessionService sessionService;
 
     @GetMapping("/getUsersById/{id}")
     public ResponseEntity<?> getUsersById(@PathVariable Integer id, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
+            sessionService.validateTokenAndRole(token, role);
             Users users = usersService.getUsersById(id);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                users
-            );
+            
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, users);
         } catch (ResourceNotFoundException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                e.getMessage()
-            );
+            throw new ResourceNotFoundException();
         }
     }
     
     @GetMapping("/getAllUsers")
     public ResponseEntity<?> getAllUsers (@RequestHeader("token") String token, @RequestHeader("role") String role) {
+        sessionService.validateTokenAndRole(token, role);
         List<Users> usersList = usersService.getAllUsers();
+        
         if (usersList.isEmpty()) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                "No data found for List Users"
-            );
+            throw new ResourceNotFoundException("No data found for List Users");
         } else {
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                usersList
-            );
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, usersList);
         }
     }
 
     @PostMapping("/addUsers")
     public ResponseEntity<?> addUsers(@Valid @RequestBody Users users, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
+            sessionService.validateTokenAndRole(token, role);
             Users newUsers = usersService.addUsers(users);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.CREATED, 
-                newUsers
-            );
+            
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, newUsers);
         } catch (DuplicateResourceException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.CONFLICT, 
-                e.getMessage()
-            );
+            throw new DuplicateResourceException();
         }
     }
 
     @PutMapping("/updateUsers/{id}")
     public ResponseEntity<?> updateUsers(@PathVariable Integer id, @Valid @RequestBody Users users, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
+            sessionService.validateTokenAndRole(token, role);
             Users updatedUsers = usersService.updateUsers(id, users);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                updatedUsers
-            );
+            
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, updatedUsers);
         } catch (ResourceNotFoundException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                e.getMessage()
-            );
+            throw new ResourceNotFoundException();
         }
     }
 
@@ -94,16 +80,12 @@ public class UsersController {
     @DeleteMapping("/deleteUsersById/{id}")
     public ResponseEntity<?> deleteUsersById(@PathVariable Integer id, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
+            sessionService.validateTokenAndRole(token, role);
             Users deletedUsers = usersService.deleteUsersById(id);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                deletedUsers
-            );
+            
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, deletedUsers);
         } catch (ResourceNotFoundException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                e.getMessage()
-            );
+            throw new ResourceNotFoundException();
         }
     }
 }

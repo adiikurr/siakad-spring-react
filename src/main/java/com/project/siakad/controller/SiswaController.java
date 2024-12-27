@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import com.project.siakad.exception.DuplicateResourceException;
 import com.project.siakad.exception.ResourceNotFoundException;
 import com.project.siakad.model.Siswa;
+import com.project.siakad.service.SessionService;
 import com.project.siakad.service.SiswaService;
 import com.project.siakad.util.ResponseUtil;
 
@@ -25,85 +26,65 @@ import com.project.siakad.util.ResponseUtil;
 @RequestMapping("api/siswa")
 public class SiswaController {
     @Autowired private SiswaService siswaService;
+    @Autowired private SessionService sessionService;
 
     @GetMapping("/getSiswaById/{id}")
     public ResponseEntity<?> getSiswaById(@PathVariable Integer id, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
+            sessionService.validateTokenAndRole(token, role);
             Siswa siswa = siswaService.getSiswaById(id);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                siswa
-            );
+            
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, siswa);
         } catch (ResourceNotFoundException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                e.getMessage()
-            );
+            throw new ResourceNotFoundException();
         }
     }
     
     @GetMapping("/getAllSiswa")
     public ResponseEntity<?> getAllSiswa (@RequestHeader("token") String token, @RequestHeader("role") String role) {
+        sessionService.validateTokenAndRole(token, role);
         List<Siswa> siswaList = siswaService.getAllSiswa();
+        
         if (siswaList.isEmpty()) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                "No data found for List Siswa"
-            );
+            throw new ResourceNotFoundException("No data found for List Siswa");
         } else {
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                siswaList
-            );
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, siswaList);
         }
     }
 
     @PostMapping("/addSiswa")
     public ResponseEntity<?> addSiswa(@Valid @RequestBody Siswa siswa, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
+            sessionService.validateTokenAndRole(token, role);
             Siswa newSiswa = siswaService.addSiswa(siswa);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.CREATED, 
-                newSiswa
-            );
+            
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, newSiswa);
         } catch (DuplicateResourceException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.CONFLICT, 
-                e.getMessage()
-            );
+            throw new DuplicateResourceException();
         }
     }
 
     @PutMapping("/updateSiswa/{id}")
     public ResponseEntity<?> updateSiswa(@PathVariable Integer id, @Valid @RequestBody Siswa siswa, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
+            sessionService.validateTokenAndRole(token, role);
             Siswa updatedSiswa = siswaService.updateSiswa(id, siswa);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                updatedSiswa
-            );
+            
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, updatedSiswa);
         } catch (ResourceNotFoundException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                e.getMessage()
-            );
+            throw new ResourceNotFoundException();
         }
     }
-
 
     @DeleteMapping("/deleteSiswaById/{id}")
     public ResponseEntity<?> deleteSiswaById(@PathVariable Integer id, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
+            sessionService.validateTokenAndRole(token, role);
             Siswa deletedSiswa = siswaService.deleteSiswaById(id);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                deletedSiswa
-            );
+
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, deletedSiswa);
         } catch (ResourceNotFoundException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                e.getMessage()
-            );
+            throw new ResourceNotFoundException();
         }
     }
 }

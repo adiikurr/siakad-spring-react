@@ -20,74 +20,59 @@ import com.project.siakad.exception.DuplicateResourceException;
 import com.project.siakad.exception.ResourceNotFoundException;
 import com.project.siakad.model.Kelas;
 import com.project.siakad.service.KelasService;
+import com.project.siakad.service.SessionService;
 import com.project.siakad.util.ResponseUtil;
 
 @Controller
 @RequestMapping("api/kelas")
 public class KelasController {
     @Autowired private KelasService kelasService;
+    @Autowired private SessionService sessionService;
 
     @GetMapping("/getKelasById/{id}")
     public ResponseEntity<?> getKelasById(@PathVariable Integer id, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
+            sessionService.validateTokenAndRole(token, role);
             Kelas kelas = kelasService.getKelasById(id);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                kelas
-            );
+            
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, kelas);
         } catch (ResourceNotFoundException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                e.getMessage()
-            );
+            throw new ResourceNotFoundException();
         }
     }
     
     @GetMapping("/getAllKelas")
     public ResponseEntity<?> getAllKelas (@RequestHeader("token") String token, @RequestHeader("role") String role) {
+        sessionService.validateTokenAndRole(token, role);
         List<Kelas> kelasList = kelasService.getAllKelas();
         if (kelasList.isEmpty()) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                "No data found for List Kelas"
-            );
+            throw new ResourceNotFoundException("No data found for List Kelas");
         } else {
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                kelasList
-            );
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, kelasList);
         }
     }
 
     @PostMapping("/addKelas")
     public ResponseEntity<?> addKelas(@Valid @RequestBody Kelas kelas, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
+            sessionService.validateTokenAndRole(token, role);
             Kelas newKelas = kelasService.addKelas(kelas);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.CREATED, 
-                newKelas
-            );
+            
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, newKelas);
         } catch (DuplicateResourceException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.CONFLICT, 
-                e.getMessage()
-            );
+            throw new DuplicateResourceException();
         }
     }
 
     @PutMapping("/updateKelas/{id}")
     public ResponseEntity<?> updateKelas(@PathVariable Integer id, @Valid @RequestBody Kelas kelas, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
+            sessionService.validateTokenAndRole(token, role);
             Kelas updatedKelas = kelasService.updateKelas(id, kelas);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                updatedKelas
-            );
+            
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, updatedKelas);
         } catch (ResourceNotFoundException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                e.getMessage()
-            );
+            throw new ResourceNotFoundException();
         }
     }
 
@@ -95,16 +80,12 @@ public class KelasController {
     @DeleteMapping("/deleteKelasById/{id}")
     public ResponseEntity<?> deleteKelasById(@PathVariable Integer id, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
+            sessionService.validateTokenAndRole(token, role);
             Kelas deletedKelas = kelasService.deleteKelasById(id);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                deletedKelas
-            );
+            
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, deletedKelas);
         } catch (ResourceNotFoundException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                e.getMessage()
-            );
+            throw new ResourceNotFoundException();
         }
     }
 }

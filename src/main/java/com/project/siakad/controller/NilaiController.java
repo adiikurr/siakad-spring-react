@@ -14,42 +14,36 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import com.project.siakad.exception.ResourceNotFoundException;
 import com.project.siakad.model.Nilai;
 import com.project.siakad.service.NilaiService;
+import com.project.siakad.service.SessionService;
 import com.project.siakad.util.ResponseUtil;
 
 @Controller
 @RequestMapping("api/nilai")
 public class NilaiController {
     @Autowired private NilaiService nilaiService;
+    @Autowired private SessionService sessionService;
 
     @GetMapping("/getNilaiById/{id}")
     public ResponseEntity<?> getNilaiById(@PathVariable Integer id, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
+            sessionService.validateTokenAndRole(token, role);
             Nilai nilai = nilaiService.getNilaiById(id);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                nilai
-            );
+            
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, nilai);
         } catch (ResourceNotFoundException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                e.getMessage()
-            );
+            throw new ResourceNotFoundException();
         }
     }
     
     @GetMapping("/getAllNilai")
     public ResponseEntity<?> getAllNilai (@RequestHeader("token") String token, @RequestHeader("role") String role) {
+        sessionService.validateTokenAndRole(token, role);
         List<Nilai> nilaiList = nilaiService.getAllNilai();
+        
         if (nilaiList.isEmpty()) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                "No data found for List Nilai"
-            );
+            throw new ResourceNotFoundException("No data found for List Nilai");
         } else {
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                nilaiList
-            );
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, nilaiList);
         }
     }
 }

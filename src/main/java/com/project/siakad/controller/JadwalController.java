@@ -35,15 +35,10 @@ public class JadwalController {
         try {
             sessionService.validateTokenAndRole(token, role);
             Jadwal jadwal = jadwalService.getJadwalById(id);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                jadwal
-            );
+            
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, jadwal);
         } catch (ResourceNotFoundException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                e.getMessage()
-            );
+            throw new ResourceNotFoundException();
         }
     }
     
@@ -51,16 +46,11 @@ public class JadwalController {
     public ResponseEntity<?> getAllJadwal (@RequestHeader("token") String token, @RequestHeader("role") String role) {
         sessionService.validateTokenAndRole(token, role);
         List<Jadwal> jadwalList = jadwalService.getAllJadwal();
+        
         if (jadwalList.isEmpty()) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                "No data found for List Jadwal"
-            );
+            throw new ResourceNotFoundException("No data found for List Jadwal");
         } else {
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                jadwalList
-            );
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, jadwalList);
         }
     }
 
@@ -69,15 +59,10 @@ public class JadwalController {
         try {
             sessionService.validateTokenAndRole(token, role);
             Jadwal newJadwal = jadwalService.addJadwal(jadwal);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.CREATED, 
-                newJadwal
-            );
+            
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, newJadwal);
         } catch (DuplicateResourceException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.CONFLICT, 
-                e.getMessage()
-            );
+            throw new DuplicateResourceException();
         }
     }
 
@@ -86,33 +71,22 @@ public class JadwalController {
         try {
             sessionService.validateTokenAndRole(token, role);
             Jadwal updatedJadwal = jadwalService.updateJadwal(id, jadwal);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                updatedJadwal
-            );
+            
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, updatedJadwal);
         } catch (ResourceNotFoundException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                e.getMessage()
-            );
+            throw new ResourceNotFoundException();
         }
     }
-
 
     @DeleteMapping("/deleteJadwalById/{id}")
     public ResponseEntity<?> deleteJadwalById(@PathVariable Integer id, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
             sessionService.validateTokenAndRole(token, role);
             Jadwal deletedJadwal = jadwalService.deleteJadwalById(id);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                deletedJadwal
-            );
+            
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, deletedJadwal);
         } catch (ResourceNotFoundException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                e.getMessage()
-            );
+            throw new ResourceNotFoundException();
         }
     }
 }

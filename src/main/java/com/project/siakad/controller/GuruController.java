@@ -44,7 +44,7 @@ public class GuruController {
             sessionService.validateTokenAndRole(token, role);
             List<Guru> guruList = guruService.getAllGuru();
             if (guruList.isEmpty()) {
-                throw new ResourceNotFoundException();
+                throw new ResourceNotFoundException("No data found for List Guru");
             } else {
                 return ResponseUtil.generateSuccessResponse(HttpStatus.OK, guruList);
             }

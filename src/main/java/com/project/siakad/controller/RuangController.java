@@ -20,74 +20,60 @@ import com.project.siakad.exception.DuplicateResourceException;
 import com.project.siakad.exception.ResourceNotFoundException;
 import com.project.siakad.model.Ruang;
 import com.project.siakad.service.RuangService;
+import com.project.siakad.service.SessionService;
 import com.project.siakad.util.ResponseUtil;
 
 @Controller
 @RequestMapping("api/ruang")
 public class RuangController {
     @Autowired private RuangService ruangService;
+    @Autowired private SessionService sessionService;
 
     @GetMapping("/getRuangById/{id}")
     public ResponseEntity<?> getRuangById(@PathVariable Integer id, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
+            sessionService.validateTokenAndRole(token, role);
             Ruang ruang = ruangService.getRuangById(id);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                ruang
-            );
+            
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, ruang);
         } catch (ResourceNotFoundException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                e.getMessage()
-            );
+            throw new ResourceNotFoundException();
         }
     }
     
     @GetMapping("/getAllRuang")
     public ResponseEntity<?> getAllRuang (@RequestHeader("token") String token, @RequestHeader("role") String role) {
+        sessionService.validateTokenAndRole(token, role);
         List<Ruang> ruangList = ruangService.getAllRuang();
+        
         if (ruangList.isEmpty()) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                "No data found for List Ruang"
-            );
+            throw new ResourceNotFoundException("No data found for List Ruang");
         } else {
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                ruangList
-            );
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, ruangList);
         }
     }
 
     @PostMapping("/addRuang")
     public ResponseEntity<?> addRuang(@Valid @RequestBody Ruang ruang, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
+            sessionService.validateTokenAndRole(token, role);
             Ruang newRuang = ruangService.addRuang(ruang);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.CREATED, 
-                newRuang
-            );
+            
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, newRuang);
         } catch (DuplicateResourceException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.CONFLICT, 
-                e.getMessage()
-            );
+            throw new DuplicateResourceException();
         }
     }
 
     @PutMapping("/updateRuang/{id}")
     public ResponseEntity<?> updateRuang(@PathVariable Integer id, @Valid @RequestBody Ruang ruang, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
+            sessionService.validateTokenAndRole(token, role);
             Ruang updatedRuang = ruangService.updateRuang(id, ruang);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                updatedRuang
-            );
+            
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, updatedRuang);
         } catch (ResourceNotFoundException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                e.getMessage()
-            );
+            throw new ResourceNotFoundException();
         }
     }
 
@@ -95,16 +81,12 @@ public class RuangController {
     @DeleteMapping("/deleteRuangById/{id}")
     public ResponseEntity<?> deleteRuangById(@PathVariable Integer id, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
+            sessionService.validateTokenAndRole(token, role);
             Ruang deletedRuang = ruangService.deleteRuangById(id);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                deletedRuang
-            );
+
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, deletedRuang);
         } catch (ResourceNotFoundException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                e.getMessage()
-            );
+            throw new ResourceNotFoundException();
         }
     }
 }
