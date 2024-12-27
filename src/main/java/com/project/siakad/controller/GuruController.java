@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.project.siakad.exception.DuplicateResourceException;
+import com.project.siakad.exception.ForbiddenException;
 import com.project.siakad.exception.ResourceNotFoundException;
 import com.project.siakad.model.Guru;
 import com.project.siakad.service.GuruService;
@@ -58,7 +60,7 @@ public class GuruController {
     }
 
     @PostMapping("/addGuru")
-    public ResponseEntity<?> addGuru(@Valid @RequestBody Guru guru) {
+    public ResponseEntity<?> addGuru(@Valid @RequestBody Guru guru, @RequestHeader("token") String token, @RequestHeader("role") String role) {
         try {
             Guru newGuru = guruService.addGuru(guru);
             return ResponseUtil.generateSuccessResponse(
@@ -68,6 +70,11 @@ public class GuruController {
         } catch (DuplicateResourceException e) {
             return ResponseUtil.generateErrorResponse(
                 HttpStatus.CONFLICT, 
+                e.getMessage()
+            );
+        } catch (ForbiddenException e) {
+            return ResponseUtil.generateErrorResponse(
+                HttpStatus.FORBIDDEN, 
                 e.getMessage()
             );
         }

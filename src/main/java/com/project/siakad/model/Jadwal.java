@@ -28,29 +28,29 @@ public class Jadwal {
         return jadwal_id;
     }
 
-    public Integer getKelas_id() {
+    public Integer getKelasId() {
         return kelas_id;
     }
-    public void setKelas_id(Integer kelas_id) {
+    public void setKelasId(Integer kelas_id) {
         this.kelas_id = kelas_id;
     }
 
-    public Integer getMapel_id() {
+    public Integer getMapelId() {
         return mapel_id;
     }
-    public void setMapel_id(Integer mapel_id) {
+    public void setMapelId(Integer mapel_id) {
         this.mapel_id = mapel_id;
     }
-    public Integer getGuru_id() {
+    public Integer getGuruId() {
         return guru_id;
     }
-    public void setGuru_id(Integer guru_id) {
+    public void setGuruId(Integer guru_id) {
         this.guru_id = guru_id;
     }
-    public Integer getRuang_id() {
+    public Integer getRuangId() {
         return ruang_id;
     }
-    public void setRuang_id(Integer ruang_id) {
+    public void setRuangId(Integer ruang_id) {
         this.ruang_id = ruang_id;
     }
     public LocalTime getJam_mulai() {

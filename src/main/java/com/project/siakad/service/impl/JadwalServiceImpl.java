@@ -3,6 +3,7 @@ package com.project.siakad.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.project.siakad.exception.DuplicateResourceException;
 import com.project.siakad.exception.ResourceNotFoundException;
 import com.project.siakad.model.Jadwal;
 import com.project.siakad.repository.JadwalRepo;
@@ -10,6 +11,7 @@ import com.project.siakad.service.JadwalService;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class JadwalServiceImpl implements JadwalService {
@@ -26,8 +28,12 @@ public class JadwalServiceImpl implements JadwalService {
     }
     @Override
     public Jadwal addJadwal (Jadwal jadwal) {
-        // if(JadwalRepo.existsByNip(jadwal.getNip())) { 
-        //     throw new DuplicateResourceException("NIP " + jadwal.getNip() + " already exist");
+        // Optional <Jadwal> guru = JadwalRepo.existsByGuruId(jadwal.getGuruId());
+        // Optional <Jadwal> kelas = JadwalRepo.existsByKelasId(jadwal.getKelasId());
+        // Optional <Jadwal> mapel = JadwalRepo.existsByMapelId(jadwal.getMapelId());
+        // Optional <Jadwal> ruang = JadwalRepo.existsByRuangId(jadwal.getRuangId());
+        // if(guru.isEmpty() && kelas.isEmpty() && mapel.isEmpty() && ruang.isEmpty()) { 
+        //     throw new DuplicateResourceException("This Jadwal already exist");
         // }
         jadwal.setCreated_at(LocalDateTime.now());
         return JadwalRepo.save(jadwal);
