@@ -24,20 +24,11 @@ public class LoginController {
     public ResponseEntity<?> loginOperator(@Valid @RequestBody Users users) {
         try {
             Session loginOperatorUsers = loginLogoutService.LoginOperator(users);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.ACCEPTED, 
-                loginOperatorUsers
-            );
+            return ResponseUtil.generateSuccessResponse(HttpStatus.ACCEPTED, loginOperatorUsers);
         } catch (ResourceNotFoundException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                e.getMessage()
-            );
+            throw e;
         } catch (LoginException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.UNAUTHORIZED, 
-                e.getMessage()
-            );
+            throw e;
         }
     }
 
@@ -45,20 +36,11 @@ public class LoginController {
     public ResponseEntity<?> loginGuru(@Valid @RequestBody Users users) {
         try {
             Session loginGuruUsers = loginLogoutService.LoginGuru(users);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.ACCEPTED, 
-                loginGuruUsers
-            );
+            return ResponseUtil.generateSuccessResponse(HttpStatus.ACCEPTED, loginGuruUsers);
         } catch (ResourceNotFoundException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                e.getMessage()
-            );
+            throw e;
         } catch (LoginException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.UNAUTHORIZED, 
-                e.getMessage()
-            );
+            throw e;
         }
     }
 
@@ -66,20 +48,11 @@ public class LoginController {
     public ResponseEntity<?> loginSiswa(@Valid @RequestBody Users users) {
         try {
             Session loginSiswaUsers = loginLogoutService.LoginSiswa(users);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.ACCEPTED, 
-                loginSiswaUsers
-            );
+            return ResponseUtil.generateSuccessResponse(HttpStatus.ACCEPTED, loginSiswaUsers);
         } catch (ResourceNotFoundException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                e.getMessage()
-            );
+            throw e;
         } catch (LoginException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.UNAUTHORIZED, 
-                e.getMessage()
-            );
+            throw e;
         }
     }
 
@@ -87,15 +60,9 @@ public class LoginController {
     public ResponseEntity<?> logoutOperator(@Valid @RequestBody Session sessionToken) {
         try {
             Session logoutOperatorUsers = loginLogoutService.logoutOperator(sessionToken);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                logoutOperatorUsers
-            );
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, logoutOperatorUsers);
         } catch (ResourceNotFoundException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                e.getMessage()
-            );
+            throw e;
         }
     }
 
@@ -103,15 +70,9 @@ public class LoginController {
     public ResponseEntity<?> logoutGuru(@Valid @RequestBody Session sessionToken) {
         try {
             Session logoutGuruUsers = loginLogoutService.logoutGuru(sessionToken);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                logoutGuruUsers
-            );
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, logoutGuruUsers);
         } catch (ResourceNotFoundException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                e.getMessage()
-            );
+            throw e;
         }
     }
 
@@ -119,15 +80,9 @@ public class LoginController {
     public ResponseEntity<?> logoutSiswa(@Valid @RequestBody Session sessionToken) {
         try {
             Session logoutSiswaUsers = loginLogoutService.logoutSiswa(sessionToken);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                logoutSiswaUsers
-            );
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, logoutSiswaUsers);
         } catch (ResourceNotFoundException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                e.getMessage()
-            );
+            throw e;
         }
     }
 }

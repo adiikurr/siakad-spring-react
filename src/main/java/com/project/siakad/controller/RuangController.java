@@ -37,7 +37,7 @@ public class RuangController {
             
             return ResponseUtil.generateSuccessResponse(HttpStatus.OK, ruang);
         } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundException();
+            throw e;
         }
     }
     
@@ -61,7 +61,7 @@ public class RuangController {
             
             return ResponseUtil.generateSuccessResponse(HttpStatus.OK, newRuang);
         } catch (DuplicateResourceException e) {
-            throw new DuplicateResourceException();
+            throw e;
         }
     }
 
@@ -73,7 +73,7 @@ public class RuangController {
             
             return ResponseUtil.generateSuccessResponse(HttpStatus.OK, updatedRuang);
         } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundException();
+            throw e;
         }
     }
 
@@ -86,7 +86,7 @@ public class RuangController {
 
             return ResponseUtil.generateSuccessResponse(HttpStatus.OK, deletedRuang);
         } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundException();
+            throw e;
         }
     }
 }

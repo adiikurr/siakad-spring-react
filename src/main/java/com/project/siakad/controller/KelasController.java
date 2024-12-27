@@ -37,7 +37,7 @@ public class KelasController {
             
             return ResponseUtil.generateSuccessResponse(HttpStatus.OK, kelas);
         } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundException();
+            throw e;
         }
     }
     
@@ -60,7 +60,7 @@ public class KelasController {
             
             return ResponseUtil.generateSuccessResponse(HttpStatus.OK, newKelas);
         } catch (DuplicateResourceException e) {
-            throw new DuplicateResourceException();
+            throw e;
         }
     }
 
@@ -72,7 +72,7 @@ public class KelasController {
             
             return ResponseUtil.generateSuccessResponse(HttpStatus.OK, updatedKelas);
         } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundException();
+            throw e;
         }
     }
 
@@ -85,7 +85,7 @@ public class KelasController {
             
             return ResponseUtil.generateSuccessResponse(HttpStatus.OK, deletedKelas);
         } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundException();
+            throw e;
         }
     }
 }

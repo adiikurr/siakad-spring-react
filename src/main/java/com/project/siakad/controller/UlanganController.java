@@ -31,7 +31,7 @@ public class UlanganController {
 
             return ResponseUtil.generateSuccessResponse(HttpStatus.OK, ulangan);
         } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundException();
+            throw e;
         }
     }
     

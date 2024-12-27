@@ -31,7 +31,7 @@ public class MapelController {
             
             return ResponseUtil.generateSuccessResponse(HttpStatus.OK, mapel);
         } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundException();
+            throw e;
         }
     }
     

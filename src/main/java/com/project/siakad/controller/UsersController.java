@@ -36,7 +36,7 @@ public class UsersController {
             
             return ResponseUtil.generateSuccessResponse(HttpStatus.OK, users);
         } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundException();
+            throw e;
         }
     }
     
@@ -60,7 +60,7 @@ public class UsersController {
             
             return ResponseUtil.generateSuccessResponse(HttpStatus.OK, newUsers);
         } catch (DuplicateResourceException e) {
-            throw new DuplicateResourceException();
+            throw e;
         }
     }
 
@@ -72,7 +72,7 @@ public class UsersController {
             
             return ResponseUtil.generateSuccessResponse(HttpStatus.OK, updatedUsers);
         } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundException();
+            throw e;
         }
     }
 
@@ -85,7 +85,7 @@ public class UsersController {
             
             return ResponseUtil.generateSuccessResponse(HttpStatus.OK, deletedUsers);
         } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundException();
+            throw e;
         }
     }
 }

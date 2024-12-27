@@ -36,7 +36,7 @@ public class SiswaController {
             
             return ResponseUtil.generateSuccessResponse(HttpStatus.OK, siswa);
         } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundException();
+            throw e;
         }
     }
     
@@ -60,7 +60,7 @@ public class SiswaController {
             
             return ResponseUtil.generateSuccessResponse(HttpStatus.OK, newSiswa);
         } catch (DuplicateResourceException e) {
-            throw new DuplicateResourceException();
+            throw e;
         }
     }
 
@@ -72,7 +72,7 @@ public class SiswaController {
             
             return ResponseUtil.generateSuccessResponse(HttpStatus.OK, updatedSiswa);
         } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundException();
+            throw e;
         }
     }
 
@@ -84,7 +84,7 @@ public class SiswaController {
 
             return ResponseUtil.generateSuccessResponse(HttpStatus.OK, deletedSiswa);
         } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundException();
+            throw e;
         }
     }
 }

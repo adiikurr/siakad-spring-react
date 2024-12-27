@@ -38,7 +38,7 @@ public class JadwalController {
             
             return ResponseUtil.generateSuccessResponse(HttpStatus.OK, jadwal);
         } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundException();
+            throw e;
         }
     }
     
@@ -62,7 +62,7 @@ public class JadwalController {
             
             return ResponseUtil.generateSuccessResponse(HttpStatus.OK, newJadwal);
         } catch (DuplicateResourceException e) {
-            throw new DuplicateResourceException();
+            throw e;
         }
     }
 
@@ -74,7 +74,7 @@ public class JadwalController {
             
             return ResponseUtil.generateSuccessResponse(HttpStatus.OK, updatedJadwal);
         } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundException();
+            throw e;
         }
     }
 
@@ -86,7 +86,7 @@ public class JadwalController {
             
             return ResponseUtil.generateSuccessResponse(HttpStatus.OK, deletedJadwal);
         } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundException();
+            throw e;
         }
     }
 }

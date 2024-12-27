@@ -24,15 +24,9 @@ public class SessionController {
     public ResponseEntity<?> getSessionById(@PathVariable Integer id) {
         try {
             Session session = sessionService.getSessionById(id);
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                session
-            );
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, session);
         } catch (ResourceNotFoundException e) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                e.getMessage()
-            );
+            throw e;
         }
     }
     
@@ -40,15 +34,9 @@ public class SessionController {
     public ResponseEntity<?> getAllSession () {
         List<Session> sessionList = sessionService.getAllSession();
         if (sessionList.isEmpty()) {
-            return ResponseUtil.generateErrorResponse(
-                HttpStatus.NOT_FOUND, 
-                "No data found for List Session"
-            );
+            throw new ResourceNotFoundException("No data found for List Session");
         } else {
-            return ResponseUtil.generateSuccessResponse(
-                HttpStatus.OK, 
-                sessionList
-            );
+            return ResponseUtil.generateSuccessResponse(HttpStatus.OK, sessionList);
         }
     }
 }

@@ -35,7 +35,7 @@ public class GuruController {
             Guru guru = guruService.getGuruById(id);
             return ResponseUtil.generateSuccessResponse(HttpStatus.OK, guru);
         } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundException();
+            throw e;
         }
     }
     
@@ -57,7 +57,7 @@ public class GuruController {
             Guru newGuru = guruService.addGuru(guru);
             return ResponseUtil.generateSuccessResponse(HttpStatus.OK, newGuru);
         } catch (DuplicateResourceException e) {
-            throw new DuplicateResourceException();
+            throw e;
         }
     }
     
@@ -68,7 +68,7 @@ public class GuruController {
             Guru updatedGuru = guruService.updateGuru(id, guru);
             return ResponseUtil.generateSuccessResponse(HttpStatus.OK, updatedGuru);
         } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundException();
+            throw e;
         }
     }
     
@@ -79,7 +79,7 @@ public class GuruController {
             Guru deletedGuru = guruService.deleteGuruById(id);
             return ResponseUtil.generateSuccessResponse(HttpStatus.OK, deletedGuru);
         } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundException();
+            throw e;
         }
     }
 }

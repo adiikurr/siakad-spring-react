@@ -31,7 +31,7 @@ public class RapotController {
 
             return ResponseUtil.generateSuccessResponse(HttpStatus.OK, rapot);
         } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundException();
+            throw e;
         }
     }
     

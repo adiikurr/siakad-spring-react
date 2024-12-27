@@ -31,7 +31,7 @@ public class NilaiController {
             
             return ResponseUtil.generateSuccessResponse(HttpStatus.OK, nilai);
         } catch (ResourceNotFoundException e) {
-            throw new ResourceNotFoundException();
+            throw e;
         }
     }
     
