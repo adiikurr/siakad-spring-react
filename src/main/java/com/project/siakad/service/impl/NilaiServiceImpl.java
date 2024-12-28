@@ -27,9 +27,9 @@ public class NilaiServiceImpl implements NilaiService {
     }
     @Override
     public Nilai addNilai (Nilai nilai) {
-        // if(NilaiRepo.existsByNip(nilai.getNip())) { 
-        //     throw new DuplicateResourceException("NIP " + nilai.getNip() + " already exist");
-        // }
+        if(NilaiRepo.existsByGuru_id(nilai.getGuru_id())) { 
+            throw new DuplicateResourceException("This Nilai for Guru ID : " + nilai.getGuru_id() + " already exist");
+        }
         nilai.setCreated_at(LocalDateTime.now());
         return NilaiRepo.save(nilai);
     }
@@ -38,16 +38,17 @@ public class NilaiServiceImpl implements NilaiService {
         Nilai existingNilai = NilaiRepo.findById(id).orElseThrow(()
         -> new ResourceNotFoundException("Data Nilai not found with ID: " + id));
         
-        // existingNilai.setNip(nilai.getNip());
-        // existingNilai.setNama_nilai(nilai.getNama_nilai());
-        // existingNilai.setMapel_id(nilai.getMapel_id());
-        // existingNilai.setGender(nilai.getGender());
-        // existingNilai.setNo_telp(nilai.getNo_telp());
-        // existingNilai.setTempat_lahir(nilai.getTempat_lahir());
-        // existingNilai.setTanggal_lahir(nilai.getTanggal_lahir());
-        // existingNilai.setAlamat(nilai.getAlamat());
-        existingNilai.setUpdated_at(LocalDateTime.now());
-
+        if(NilaiRepo.existsByGuru_id(nilai.getGuru_id())) { 
+            throw new DuplicateResourceException("This Nilai for Guru ID : " + nilai.getGuru_id() + " already exist");
+        } else {
+            existingNilai.setGuru_id(nilai.getGuru_id());
+            existingNilai.setKkm(nilai.getKkm());
+            existingNilai.setDeskripsi_a(nilai.getDeskripsi_a());
+            existingNilai.setDeskripsi_b(nilai.getDeskripsi_b());
+            existingNilai.setDeskripsi_c(nilai.getDeskripsi_c());
+            existingNilai.setDeskripsi_d(nilai.getDeskripsi_d());
+            existingNilai.setUpdated_at(LocalDateTime.now());
+        }
         return NilaiRepo.save(existingNilai);
     }
     @Override

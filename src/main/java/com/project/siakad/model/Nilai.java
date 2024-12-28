@@ -13,7 +13,7 @@ import jakarta.validation.constraints.NotNull;
 public class Nilai {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Integer nilai_id;
     
-    @Column @NotNull private Integer guru_id;
+    @Column(unique = true) @NotNull private Integer guru_id;
     @Column @NotNull private Integer kkm;
     @Column @NotNull private String deskripsi_a;
     @Column @NotNull private String deskripsi_b;
