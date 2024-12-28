@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import com.project.siakad.exception.DuplicateResourceException;
 import com.project.siakad.exception.ResourceNotFoundException;
 import com.project.siakad.model.Rapot;
-import com.project.siakad.model.Users;
 import com.project.siakad.repository.RapotRepo;
 import com.project.siakad.service.RapotService;
 
