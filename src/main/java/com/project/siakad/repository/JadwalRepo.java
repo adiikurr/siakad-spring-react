@@ -12,7 +12,6 @@ import com.project.siakad.model.Jadwal;
 @Repository
 public interface JadwalRepo extends JpaRepository<Jadwal, Integer> {
 
-    // Custom query untuk validasi kombinasi unik
     @Query("SELECT COUNT(j) > 0 FROM Jadwal j WHERE j.guru_id = :guru_id AND j.kelas_id = :kelas_id AND j.mapel_id = :mapel_id AND j.ruang_id = :ruang_id")
     boolean existsByUniqueCombination(@Param("guru_id") Integer guru_id, 
                                        @Param("kelas_id") Integer kelas_id, 

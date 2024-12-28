@@ -11,7 +11,6 @@ import com.project.siakad.service.JadwalService;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class JadwalServiceImpl implements JadwalService {
@@ -28,10 +27,6 @@ public class JadwalServiceImpl implements JadwalService {
     }
     @Override
     public Jadwal addJadwal (Jadwal jadwal) {
-        // Optional <Jadwal> guru = JadwalRepo.existsByGuruId(jadwal.getGuruId());
-        // Optional <Jadwal> kelas = JadwalRepo.existsByKelasId(jadwal.getKelasId());
-        // Optional <Jadwal> mapel = JadwalRepo.existsByMapelId(jadwal.getMapelId());
-        // Optional <Jadwal> ruang = JadwalRepo.existsByRuangId(jadwal.getRuangId());
         if(JadwalRepo.existsByUniqueCombination(jadwal.getGuru_id(), jadwal.getKelas_id(), jadwal.getMapel_id(), jadwal.getRuang_id())) { 
             throw new DuplicateResourceException("This Jadwal already exist");
         }
@@ -43,16 +38,17 @@ public class JadwalServiceImpl implements JadwalService {
         Jadwal existingJadwal = JadwalRepo.findById(id).orElseThrow(()
         -> new ResourceNotFoundException("Data Jadwal not found with ID: " + id));
         
-        // existingJadwal.setNip(jadwal.getNip());
-        // existingJadwal.setNama_jadwal(jadwal.getNama_jadwal());
-        // existingJadwal.setMapel_id(jadwal.getMapel_id());
-        // existingJadwal.setGender(jadwal.getGender());
-        // existingJadwal.setNo_telp(jadwal.getNo_telp());
-        // existingJadwal.setTempat_lahir(jadwal.getTempat_lahir());
-        // existingJadwal.setTanggal_lahir(jadwal.getTanggal_lahir());
-        // existingJadwal.setAlamat(jadwal.getAlamat());
-        existingJadwal.setUpdated_at(LocalDateTime.now());
-
+        if(JadwalRepo.existsByUniqueCombination(jadwal.getGuru_id(), jadwal.getKelas_id(), jadwal.getMapel_id(), jadwal.getRuang_id())) { 
+            throw new DuplicateResourceException("This Jadwal already exist");
+        } else {
+            existingJadwal.setGuru_id(jadwal.getGuru_id());
+            existingJadwal.setKelas_id(jadwal.getKelas_id());
+            existingJadwal.setMapel_id(jadwal.getMapel_id());
+            existingJadwal.setRuang_id(jadwal.getRuang_id());
+            existingJadwal.setJam_mulai(jadwal.getJam_mulai());
+            existingJadwal.setJam_selesai(jadwal.getJam_selesai());
+            existingJadwal.setUpdated_at(LocalDateTime.now());
+        }
         return JadwalRepo.save(existingJadwal);
     }
     @Override

@@ -16,9 +16,9 @@ public class Ulangan {
     @Column @NotNull private Integer kelas_id;
     @Column @NotNull private Integer guru_id;
     @Column @NotNull private Integer mapel_id;
-    @Column @NotNull private Integer ulha;
-    @Column @NotNull private Integer uts;
-    @Column @NotNull private Integer uas;
+    @Column private Integer ulha;
+    @Column private Integer uts;
+    @Column private Integer uas;
     @Column private LocalDateTime created_at;
     @Column private LocalDateTime updated_at;
     @Column private LocalDateTime deleted_at;
